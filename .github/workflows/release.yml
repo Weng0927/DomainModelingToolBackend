@@ -1,6 +1,0 @@
-name: Domain Modeling Tool Backend Release
-
-on: 
-  push:
-    branches: dev # dev分支推送触发CI/CD
-    
