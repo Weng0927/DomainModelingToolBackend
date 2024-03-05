@@ -33,17 +33,11 @@ jobs:
       - name: ScpUploader
         uses: moonpathbg/scp_uploader@latest
         with:
-          source: "target/domain-modeling-tool-backend-0.0.1-SNAPSHOT.jar"
-          target: "/home/ubuntu/backend/domain-modeling-tool-backend-0.0.1-SNAPSHOT.jar"
+          source: "target/"
+          target: "/home/ubuntu/backend/"
           host: ${{ secrets.TENCENT_SERVER_HOST }}
           username: "${{ secrets.TENCENT_SERVER_USERNAME }}"
           key: ${{ secrets.TENCENT_SERVER_PRIVATE_KEY }}
-
-  deploy:
-    runs-on: ubuntu-latest # 运行环境
-    environment:
-      name: Tencent Cloud Server
-    steps:
       - name: SSH Run
         uses: appleboy/ssh-action@master
         with:
