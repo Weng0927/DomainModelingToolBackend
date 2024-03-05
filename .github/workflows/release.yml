@@ -14,7 +14,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 17
-      - name: MavenTest
+      - name: Maven Test
         run: mvn clean compile
 
   build:
@@ -28,7 +28,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 17
-      - name: MavenBuild
+      - name: Maven Build
         run: mvn clean package -DskipTests -Dmaven.javadoc.skip=true
       - name: ScpUploader
         uses: moonpathbg/scp_uploader@latest
