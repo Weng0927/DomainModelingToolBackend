@@ -46,4 +46,4 @@ jobs:
           key: ${{ secrets.TENCENT_SERVER_PRIVATE_KEY }}
           script: |
             cd /home/ubuntu/backend
-            nohup java -jar domain-modeling-tool-backend-0.0.1-SNAPSHOT.jar > springboot.log 2>&1 &
+            nohup java -jar target/domain-modeling-tool-backend-0.0.1-SNAPSHOT.jar > springboot.log 2>&1 &
