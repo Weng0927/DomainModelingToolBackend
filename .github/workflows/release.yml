@@ -1,0 +1,55 @@
+name: Domain Modeling Tool Backend Release
+
+on:
+  push:
+    branches: dev # dev 分支推送时触发CI/CD
+
+jobs:
+  test:
+    runs-on: ubuntu-latest # 运行环境
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up JDK 17
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+      - name: MavenTest
+        run: mvn clean compile
+
+  build:
+    runs-on: ubuntu-latest # 运行环境
+    environment:
+      name: Tencent Cloud Server
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up JDK 17
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+      - name: MavenBuild
+        run: mvn clean package -DskipTests -Dmaven.javadoc.skip=true
+      - name: ScpUploader
+        uses: moonpathbg/scp_uploader@latest
+        with:
+          source: "target/domain-modeling-tool-backend-0.0.1-SNAPSHOT.jar"
+          target: "/home/ubuntu/backend/domain-modeling-tool-backend-0.0.1-SNAPSHOT.jar"
+          host: ${{ secrets.TENCENT_SERVER_HOST }}
+          username: "${{ secrets.TENCENT_SERVER_USERNAME }}"
+          key: ${{ secrets.TENCENT_SERVER_PRIVATE_KEY }}
+
+  deploy:
+    runs-on: ubuntu-latest # 运行环境
+    environment:
+      name: Tencent Cloud Server
+    steps:
+      - name: SSH Run
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.TENCENT_SERVER_HOST }}
+          username: ${{ secrets.TENCENT_SERVER_USERNAME }}
+          key: ${{ secrets.TENCENT_SERVER_PRIVATE_KEY }}
+          script: |
+            cd /home/ubuntu/backend
+            nohup java -jar domain-modeling-tool-backend-0.0.1-SNAPSHOT.jar > springboot.log 2>&1 &
