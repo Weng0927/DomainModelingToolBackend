@@ -30,7 +30,7 @@ jobs:
           java-version: 17
       - name: Maven Build
         run: mvn clean package -DskipTests -Dmaven.javadoc.skip=true
-      - name: ScpUploader
+      - name: Scp Uploader
         uses: moonpathbg/scp_uploader@latest
         with:
           source: "target/"
